@@ -1,0 +1,32 @@
+# Spring Boot configuration
+spring:
+  application:
+    name: vollmed
+  profiles:
+    active: ${APP_PROFILE:dev}
+# API | Personalization
+api:
+  profile: ${spring.profiles.active}
+  system-tag: LANET-API-VOLLMED
+  system-tag-base: VOLLMED.API
+  system-version: v.1.0.0
+  system-reference: LA.net | API Vollmed
+  system-information: Vollmed
+  system-description: Vollmed
+  system-name: ${api.system-reference} ${api.system-version} (${api.system-tag})
+  url-site: www.vollmed.com
+  title-site: VOLLMED
+  email-site: contato@vollmed.com
+  config:
+    language: pt_BR # en_US
+    version: v1
+    path: # /api/${api.config.version}
+# Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /doc
+    enabled: true
+    tryItOutEnabled: true

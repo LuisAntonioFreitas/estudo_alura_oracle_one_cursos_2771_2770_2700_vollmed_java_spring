@@ -1,0 +1,43 @@
+# API
+api:
+  url-base: https://api-v1.vollmed.com${api.config.path}
+  cors:
+    headers: '*'
+    origins: 'http://vollmed.com,https://vollmed.com,
+              http://www.vollmed.com,https://www.vollmed.com'
+    methods: 'GET,POST,PUT,DELETE'
+# Server configuration
+server:
+  port: ${APP_PORT}
+  port-exposed: ${APP_PORT_EXPOSED}
+  ssl:
+    hsts:
+      enabled: false
+# Spring Boot configuration
+spring:
+  # Database
+  datasource:
+    database-type: MySQL
+    database-name: ${DB_NAME}
+    database-ip: ${DB_IP}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${spring.datasource.database-name}?useSSL=false&autoReconnectForPools=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  # JPA properties
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none # none, validate, update, create, create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: false
+    show-sql: false
+    format-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
