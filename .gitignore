@@ -1,3 +1,9 @@
+### dev ###
+src/main/resources/application-dev.yml
+src/main/resources/application-test.yml
+temp/
+
+###
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
