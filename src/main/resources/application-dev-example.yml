@@ -5,6 +5,8 @@ api:
     headers: '**'
     origins: '**'
     methods: 'GET,POST,PUT,DELETE,OPTIONS,HEAD,TRACE,CONNECT'
+  security:
+    secret: ${SECURITY_SECRET:12345678}
 # Server configuration
 server:
   port: 8080
@@ -35,3 +37,5 @@ spring:
     format-sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+  # Miscellaneous
+  management.endpoint.restart.enabled: true

@@ -40,6 +40,8 @@ public class ApplicationProperties {
     @Value("${api.cors.origins}") public String apiCorsOrigins;
     @Value("${api.cors.methods}") public String apiCorsMethods;
 
+    public Boolean verifyConnectedDb = false;
+
 
     @Bean
     public String status(String... result) {
@@ -55,6 +57,7 @@ public class ApplicationProperties {
             connectedDb = !catalog.trim().equals("")
                     ? String.format("Connected to the %s '%s'", this.databaseType, this.databaseName)
                     : String.format("NOT connected to the %s '%s'", this.databaseType, this.databaseName);
+            verifyConnectedDb = (!catalog.trim().equals("") ? true : false);
         } catch(Exception ex) {
             connectedDb = String.format("%s NOT connected...", this.databaseType);
         };

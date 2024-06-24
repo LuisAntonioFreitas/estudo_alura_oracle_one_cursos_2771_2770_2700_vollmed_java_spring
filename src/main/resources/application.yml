@@ -21,6 +21,10 @@ api:
     language: pt_BR # en_US
     version: v1
     path: # /api/${api.config.version}
+# Server
+server:
+  error:
+    include-stacktrace: never # always or never
 # SpringDoc | Swagger
 springdoc:
   api-docs:
