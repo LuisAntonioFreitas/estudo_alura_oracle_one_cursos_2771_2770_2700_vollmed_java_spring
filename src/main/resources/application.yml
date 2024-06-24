@@ -21,7 +21,7 @@ api:
     language: pt_BR # en_US
     version: v1
     path: # /api/${api.config.version}
-# Swagger
+# SpringDoc | Swagger
 springdoc:
   api-docs:
     path: /v3/api-docs
