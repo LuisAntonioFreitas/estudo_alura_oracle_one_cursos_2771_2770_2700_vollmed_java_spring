@@ -2,7 +2,7 @@
 api:
   url-base: https://api-v1.vollmed.com${api.config.path}
   cors:
-    headers: '*'
+    headers: '**'
     origins: 'http://vollmed.com,https://vollmed.com,
               http://www.vollmed.com,https://www.vollmed.com'
     methods: 'GET,POST,PUT,DELETE'
