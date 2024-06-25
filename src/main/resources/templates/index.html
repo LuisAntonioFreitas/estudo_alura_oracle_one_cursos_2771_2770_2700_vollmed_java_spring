@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='UTF-8'>
+
+    <title th:text="${title}"></title>
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.png" rel="shortcut icon" type="image/x-icon" />
+
+    <link rel="stylesheet" type="text/css" href="/styles/index.css"></link>
+</head>
+<body>
+    <div class="logo">
+        <a href="https://www.luisantonio.net" target="_blank">
+            <img src="/images/logo.png" alt="Logo">
+        </a>
+    </div>
+
+    <div class="container" th:utext="${message}">
+        <p ></p>
+    </div>
+
+    <div class="signature">
+        <a href="https://github.com/luisantoniofreitas" target="_blank">
+            &ltlaf /&gt
+        </a>
+    </div>
+</body>
+</html>

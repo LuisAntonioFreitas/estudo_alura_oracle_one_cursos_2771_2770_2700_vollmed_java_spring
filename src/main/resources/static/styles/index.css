@@ -1,0 +1,31 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+    font-size: 1rem;
+    background: #000;
+}
+body {
+    margin: 20px;
+    display: inline-block;
+}
+.logo {
+    padding-bottom: 10px;
+}
+.signature {
+    padding-top: 10px;
+    left: 0;
+}
+.signature a {
+    font-family: "Roboto", "Poppins", sans-serif !important;
+    color: #fff;
+    text-decoration-line: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.signature a:hover {
+    color: #52595d;
+}
