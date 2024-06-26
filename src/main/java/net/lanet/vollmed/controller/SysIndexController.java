@@ -10,7 +10,7 @@ import org.thymeleaf.context.Context;
 
 @RestController
 @CrossOrigin(allowedHeaders = "**", origins = "**", methods = {RequestMethod.GET})
-@Tag(name = "Index")
+@Tag(name = "Index") // Swagger
 @RequestMapping(path = "${api.config.path}")
 public class SysIndexController {
     @Autowired
