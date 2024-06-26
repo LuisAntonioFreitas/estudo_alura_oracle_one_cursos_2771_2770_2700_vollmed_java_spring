@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface ISysDbRepository extends JpaRepository<SysDb, Integer> {
     @Query(nativeQuery = true, value =
+            // MySQL
             "   SELECT CREATE_TIME " +
                     "     FROM information_schema.TABLES " +
                     "    WHERE TABLE_SCHEMA = :databaseName " +
@@ -18,6 +19,7 @@ public interface ISysDbRepository extends JpaRepository<SysDb, Integer> {
     LocalDateTime findDateFirstTableCreated(String databaseName);
 
     @Query(nativeQuery = true, value =
+            // MySQL
             " SELECT CREATE_TIME " +
                     "   FROM information_schema.TABLES " +
                     "  WHERE TABLE_NAME = :tableName " )
