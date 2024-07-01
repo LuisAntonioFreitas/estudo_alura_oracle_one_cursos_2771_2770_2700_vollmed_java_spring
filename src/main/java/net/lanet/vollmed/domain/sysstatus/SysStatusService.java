@@ -21,7 +21,7 @@ public class SysStatusService implements ISysStatusService {
     @Autowired
     private ApplicationProperties ap;
     @Autowired
-    private DateTimeUtil dateTimeUtil;
+    private DateTimeUtil dtu;
     @Autowired
     private RestartEndpoint restartEndpoint;
 
@@ -46,12 +46,12 @@ public class SysStatusService implements ISysStatusService {
             final String catalog = databaseCreate.toString();
             ap.verifyConnectedDb = (!catalog.trim().equals("") ? true : false);
 
-            databaseCreate = dateTimeUtil.convertFormatUTCtoLocal(databaseCreate);
-            tableCreate = dateTimeUtil.convertFormatUTCtoLocal(tableCreate);
+            databaseCreate = dtu.convertUTCtoLTD(databaseCreate);
+            tableCreate = dtu.convertUTCtoLTD(tableCreate);
         } catch(Exception ignored) {};
 
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("date", dateTimeUtil.getNowFormatLocal().toString());
+        map.put("date", dtu.getNowFormatted(DateTimeUtil.formatter));
         map.put("reference", ap.apiSystemReference);
         map.put("system", ap.apiSystemTagBase);
         map.put("version", ap.apiSystemVersion);
@@ -78,7 +78,7 @@ public class SysStatusService implements ISysStatusService {
         Object[] result = TestIpUtil.testIp(host);
 
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("date",dateTimeUtil.getNowFormatLocal().toString());
+        map.put("date", dtu.getNowFormatted(DateTimeUtil.formatter));
         map.put("db", ap.databaseName);
         map.put("result", result[0]);
         map.put("message", "O banco " + ap.databaseName + " foi encontrado? " + result[0]);
@@ -91,7 +91,7 @@ public class SysStatusService implements ISysStatusService {
         Object[] result = TestIpUtil.testIp(ip);
 
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("date", dateTimeUtil.getNowFormatLocal().toString());
+        map.put("date", dtu.getNowFormatted(DateTimeUtil.formatter));
         map.put("ip", ip);
         map.put("result", result[0]);
         map.put("message", result[1]);
