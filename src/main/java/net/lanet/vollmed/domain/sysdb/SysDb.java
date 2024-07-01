@@ -8,5 +8,5 @@ public class SysDb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Long Id;
+    private Long id;
 }
