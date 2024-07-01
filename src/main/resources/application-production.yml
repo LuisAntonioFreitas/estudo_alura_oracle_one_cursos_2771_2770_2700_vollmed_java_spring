@@ -43,5 +43,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  flyway:
+    enabled: none
+    locations: classpath:db/migration
   # Miscellaneous
   management.endpoint.restart.enabled: true

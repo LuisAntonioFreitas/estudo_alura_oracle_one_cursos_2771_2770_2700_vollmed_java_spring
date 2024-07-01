@@ -37,5 +37,8 @@ spring:
     format-sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   # Miscellaneous
   management.endpoint.restart.enabled: true
