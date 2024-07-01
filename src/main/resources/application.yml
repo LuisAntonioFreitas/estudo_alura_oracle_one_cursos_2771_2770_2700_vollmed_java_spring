@@ -4,6 +4,9 @@ spring:
     name: vollmed
   profiles:
     active: ${APP_PROFILE:dev}
+  mvc:
+    locale: pt_BR # en_US
+    locale-resolver: fixed
 # API | Personalization
 api:
   profile: ${spring.profiles.active}
@@ -18,7 +21,7 @@ api:
   title-site: VOLLMED
   email-site: contato@vollmed.com
   config:
-    language: pt_BR # en_US
+    language: ${spring.mvc.locale}
     version: v1
     path: # /api/${api.config.version}
   debug: true

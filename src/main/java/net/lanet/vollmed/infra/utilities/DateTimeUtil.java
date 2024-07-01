@@ -14,12 +14,18 @@ public class DateTimeUtil {
     private ApplicationProperties ap;
 
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    public static final DateTimeFormatter formatter_FileExport = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
     public static final DateTimeFormatter formatter_ptBR = DateTimeFormatter.ofPattern("dd-MM-yyyy' 'HH:mm:ss");
     public static final DateTimeFormatter formatter_ptBR_Date = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static final DateTimeFormatter formatter_ptBR_Time = DateTimeFormatter.ofPattern("HH:mm:ss");
-    public static final DateTimeFormatter formatter_enUS = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
-    public static final DateTimeFormatter formatter_enUS_Date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter formatter_ptBR_FileExport = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
+    public static final DateTimeFormatter formatter_ptBR_DateAsTimeH = DateTimeFormatter.ofPattern("dd-MM-yyyy' às 'HH:mm'h'");
+    public static final DateTimeFormatter formatter_enUS = DateTimeFormatter.ofPattern("MM-dd-yyyy' 'HH:mm:ss");
+    public static final DateTimeFormatter formatter_enUS_Date = DateTimeFormatter.ofPattern("MM-dd-yyyy");
     public static final DateTimeFormatter formatter_enUS_Time = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter formatter_enUS_FileExport = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
+    public static final DateTimeFormatter formatter_enUS_DateAtTimeA = DateTimeFormatter.ofPattern("MM-dd-yyyy' at 'HH:mm a");
+
 
     public LocalDateTime getNow() {
         // Ex.: 2024-06-30T18:57:27.471135
@@ -71,7 +77,7 @@ public class DateTimeUtil {
         } else {
             // Ex.: 30-06-2024 19:49:45
             if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) { f = formatter_ptBR; }
-            // Ex.: 2024-06-30 19:49:45
+            // Ex.: 06-30-2024 19:49:45
             if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) { f = formatter_enUS; }
         }
         String newFormat = ltd.format(f);
@@ -84,7 +90,7 @@ public class DateTimeUtil {
         } else {
             // Ex.: 30-06-2024 19:49:45
             if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) { f = formatter_ptBR; }
-            // Ex.: 2024-06-30 19:49:45
+            // Ex.: 06-30-2024 19:49:45
             if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) { f = formatter_enUS; }
         }
         String newFormat = ltd.format(f);
@@ -104,4 +110,28 @@ public class DateTimeUtil {
         return convert;
     }
 
+    public DateTimeFormatter formattedSystemDefault() {
+        DateTimeFormatter f = formatter; // Ex.: 2024-06-30T19:49:45
+        // Ex.: 30-06-2024 19:49:45
+        if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) { f = formatter_ptBR; }
+        // Ex.: 06-30-2024 19:49:45
+        if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) { f = formatter_enUS; }
+        return f;
+    }
+    public DateTimeFormatter formattedFileExportSystemDefault() {
+        DateTimeFormatter f = formatter_FileExport; // Ex.: 2024-06-30_19-49-45
+        // Ex.: 30-06-2024_19-49-45
+        if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) { f = formatter_ptBR_FileExport; }
+        // Ex.: 06-30-2024_19-49-45
+        if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) { f = formatter_enUS_FileExport; }
+        return f;
+    }
+    public DateTimeFormatter formattedFooterSystemDefault() {
+        DateTimeFormatter f = formatter; // Ex.: 2024-06-30T19:49:45
+        // Ex.: 30-06-2024 às 19:49h
+        if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) { f = formatter_ptBR_DateAsTimeH; }
+        // Ex.: 06-30-2024 at 19:49 PM
+        if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) { f = formatter_enUS_DateAtTimeA; }
+        return f;
+    }
 }

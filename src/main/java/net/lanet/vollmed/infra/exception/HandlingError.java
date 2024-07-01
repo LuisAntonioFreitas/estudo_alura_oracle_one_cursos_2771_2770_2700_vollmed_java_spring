@@ -25,24 +25,26 @@ public class HandlingError {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity handlingErrorDataIntegrity(DataIntegrityViolationException ex, WebRequest request) {
+        String details = (ex.getMostSpecificCause() != null) ? ex.getMostSpecificCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Violação de integridade de dados.",
-                ex.getMostSpecificCause().getMessage(),
+                details,
                 List.of());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity handlingError404(EntityNotFoundException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
                 !ex.getMessage().isEmpty() ? ex.getMessage() : "Conteúdo não encontrado.",
-                ex.getLocalizedMessage(),
+                details,
                 List.of());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
@@ -70,12 +72,13 @@ public class HandlingError {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity handlingError400(HttpMessageNotReadableException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 !ex.getMessage().isEmpty() ? ex.getMessage() : "Verifique a requisição.",
-                ex.getLocalizedMessage(),
+                details,
                 List.of());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
@@ -108,12 +111,13 @@ public class HandlingError {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handlingError500(Exception ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 !ex.getMessage().isEmpty() ? ex.getMessage() : "Erro interno do servidor.",
-                ex.getLocalizedMessage(),
+                details,
                 List.of());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
