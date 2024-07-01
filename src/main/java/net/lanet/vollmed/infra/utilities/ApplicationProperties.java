@@ -34,6 +34,9 @@ public class ApplicationProperties {
     @Value("${api.config.path}") public String apiConfigPath;
     @Value("${api.config.language}") public String apiConfigLanguage;
 
+    @Value("${api.debug}") public String apiDebug;
+    @Value("${api.debug.debug-type}") public String apiDebugType;
+
     @Value("${api.url-base}") public String apiUrlBase;
 
     @Value("${api.cors.headers}") public String apiCorsHeaders;

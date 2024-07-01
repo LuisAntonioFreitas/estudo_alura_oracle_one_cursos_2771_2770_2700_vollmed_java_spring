@@ -21,6 +21,8 @@ api:
     language: pt_BR # en_US
     version: v1
     path: # /api/${api.config.version}
+  debug: true
+  debug.debug-type: basic # full (all) | basic (dev,test)
 # Server
 server:
   error:

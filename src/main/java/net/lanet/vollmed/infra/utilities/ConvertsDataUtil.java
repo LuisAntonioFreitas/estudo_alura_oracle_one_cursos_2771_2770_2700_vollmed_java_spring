@@ -6,7 +6,11 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -58,5 +62,24 @@ public class ConvertsDataUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static <T> List<Map<String, Object>> convertToListOfMaps(List<T> modelSource) {
+        List<Map<String, Object>> listOfMaps = new ArrayList<>();
+
+        for (T model : modelSource) {
+            Map<String, Object> map = new LinkedHashMap<>();
+
+            Field[] fields = model.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    map.put(field.getName(), field.get(model));
+                } catch (IllegalAccessException ignored) {}
+            }
+            listOfMaps.add(map);
+        }
+
+        return listOfMaps;
     }
 }

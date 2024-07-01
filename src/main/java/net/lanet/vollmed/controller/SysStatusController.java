@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.lanet.vollmed.domain.sysstatus.ISysStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class SysStatusController {
 
     @Autowired
+    @Qualifier("sysStatusService")
     private ISysStatusService service;
 
     @CrossOrigin(allowedHeaders = "**", origins = "**", methods = {RequestMethod.GET})
@@ -32,7 +34,7 @@ public class SysStatusController {
         return service.getConnectIp(ip);
     }
 
-    @Operation(hidden = true) // Swagger
+//    @Operation(hidden = true) // Swagger
     @GetMapping(path = {"/restart"}, produces = MediaType.TEXT_HTML_VALUE)
     public String getRestart() { return service.getRestart(); }
 }

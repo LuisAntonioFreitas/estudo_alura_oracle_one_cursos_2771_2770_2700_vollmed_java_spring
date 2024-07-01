@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import net.lanet.vollmed.infra.clients.brasilapiddd.BrasilApiDddDtoResponse;
 import net.lanet.vollmed.infra.clients.brasilapiddd.IBrasilApiDddService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequestMapping(path = "${api.config.path}/ddd")
 public class BrasilApiDddController {
     @Autowired
+    @Qualifier("brasilApiDddService")
     private IBrasilApiDddService service;
 
     @GetMapping(path = {"/{ddd}"})
