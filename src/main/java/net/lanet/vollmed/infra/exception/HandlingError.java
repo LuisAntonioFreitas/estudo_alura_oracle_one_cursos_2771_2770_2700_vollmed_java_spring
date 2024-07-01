@@ -3,6 +3,7 @@ package net.lanet.vollmed.infra.exception;
 import jakarta.persistence.EntityNotFoundException;
 import net.lanet.vollmed.infra.utilities.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,30 +14,51 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 public class HandlingError {
 
     @Autowired
-    private DateTimeUtil dateTimeUtil;
+    private DateTimeUtil dtu;
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity handlingErrorDataIntegrity(DataIntegrityViolationException ex, WebRequest request) {
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Violação de integridade de dados.",
+                ex.getMostSpecificCause().getMessage(),
+                List.of());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handlingError404(WebRequest request) {
+    public ResponseEntity handlingError404(EntityNotFoundException ex, WebRequest request) {
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
-                "",
-                "Conteúdo não encontrado.");
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Conteúdo não encontrado.",
+                ex.getLocalizedMessage(),
+                List.of());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
 
     // Erros de Validação de Dados | @Valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handlingError400(MethodArgumentNotValidException ex) {
-        var erros = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(erros.stream().map(DataValidationErrorDtoResponse::new).toList());
+    public ResponseEntity handlingError400(MethodArgumentNotValidException ex, WebRequest request) {
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Validação de dados.",
+                "",
+                ex.getFieldErrors().stream().map(DataValidationErrorDtoResponse::new).toList());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
     private record DataValidationErrorDtoResponse(String field, String message) {
@@ -52,8 +74,9 @@ public class HandlingError {
                 request.getDescription(false),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Verifique a requisição.",
                 ex.getLocalizedMessage(),
-                "Verifique a requisição.");
+                List.of());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
 
@@ -89,27 +112,30 @@ public class HandlingError {
                 request.getDescription(false),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Erro interno do servidor.",
                 ex.getLocalizedMessage(),
-                "Erro interno do servidor.");
+                List.of());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
     }
 
 
     private Map<String, Object> defineCustomMessageError(
-            String path, Integer status, String error, String details, String message) {
+            String path, Integer status, String error, String message, String details,
+            List<DataValidationErrorDtoResponse> listValidation) {
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("timestamp", System.currentTimeMillis());
-        map.put("date", dateTimeUtil.getNowFormatLocal().toString());
+        map.put("date", dtu.getNowFormatted(DateTimeUtil.formatter));
         if (!path.trim().isEmpty()) { map.put("path", path.replace("uri=","")); }
         if (!status.toString().trim().isEmpty()) { map.put("status", status); }
         if (!error.trim().isEmpty()) { map.put("error", error); }
+        if (!message.trim().isEmpty()) { map.put("message", message); }
         if (!details.trim().isEmpty()) {
             if (!details.trim().equalsIgnoreCase(message.trim())) {
                 map.put("details", details);
             }
         }
-        if (!message.trim().isEmpty()) { map.put("message", message); }
+        if (!listValidation.isEmpty()) { map.put("validation", listValidation); }
         return map;
     }
 
