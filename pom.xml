@@ -114,6 +114,20 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Apache POI | Manipulando Documentos em Java (XLS | Excel) -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.5</version>
+		</dependency>
+
+		<!-- SuperCSV | Manipulando Documentos em Java (CSV | TSV) -->
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
 		<!-- Starter Security | Token JWT | OAuth2 Authorization Server -->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
