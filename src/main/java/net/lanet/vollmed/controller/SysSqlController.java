@@ -1,6 +1,7 @@
 package net.lanet.vollmed.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import net.lanet.vollmed.domain.syssql.ISysSqlService;
@@ -66,6 +67,8 @@ public class SysSqlController {
             if (verifyExport("All", null, export, response, "Sql", convertedSelectedResults)) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException((!messageError.isEmpty() ? messageError : "Erro ao executar a instrução SQL."), e);
         }
@@ -95,6 +98,8 @@ public class SysSqlController {
             if (verifyExport("All", null, export, response, "Sp", convertedSelectedResults)) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException((!messageError.isEmpty() ? messageError : "Erro ao executar a Stored Procedure."), e);
         }
@@ -142,6 +147,9 @@ public class SysSqlController {
     private Boolean verifyExport(String type, String search, String export, HttpServletResponse response,
                                  String item, List<Map<String, Object>> viewList) {
         if (export != null) {
+            if (viewList.isEmpty()) {
+                throw new EntityNotFoundException("Não existe conteúdo a ser exportado.");
+            }
             String name = RegexUtil.normalizeStringLettersAndNumbers(item);
             HandleExportFile.execute(export, service, response, viewList,
                     String.format("%sList%s", name, type), String.format("Listagem | %s", item.toUpperCase()), null, name);
