@@ -1,15 +1,12 @@
 package net.lanet.vollmed;
 
 import net.lanet.vollmed.infra.utilities.ApplicationProperties;
-import net.lanet.vollmed.infra.utilities.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.time.LocalDateTime;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "net.lanet.vollmed")

@@ -7,6 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -93,20 +96,48 @@ public class HandlingError {
     // Erros de Validação de Dados de Regras de Negócio
 
     // Security
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity handlingErrorBadCredentials() {
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
-//    }
-//
-//    @ExceptionHandler(AuthenticationException.class)
-//    public ResponseEntity handlingErrorAuthentication() {
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação");
-//    }
-//
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity handlingErrorAccessDenied() {
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity handlingErrorBadCredentials(Exception ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Credenciais inválidas.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity handlingErrorAuthentication(Exception ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                !ex.getMessage().equalsIgnoreCase("Acesso negado.")
+                        ? HttpStatus.UNAUTHORIZED.value() : HttpStatus.FORBIDDEN.value(),
+                !ex.getMessage().equalsIgnoreCase("Acesso negado.")
+                        ? HttpStatus.UNAUTHORIZED.getReasonPhrase() : HttpStatus.FORBIDDEN.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Falha na autenticação.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(!ex.getMessage().equalsIgnoreCase("Acesso negado.")
+                ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN).body(map);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity handlingErrorAccessDenied(Exception ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Acesso negado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(map);
+    }
     // Security
 
     @ExceptionHandler(Exception.class)
@@ -134,9 +165,11 @@ public class HandlingError {
         if (!status.toString().trim().isEmpty()) { map.put("status", status); }
         if (!error.trim().isEmpty()) { map.put("error", error); }
         if (!message.trim().isEmpty()) { map.put("message", message); }
-        if (!details.trim().isEmpty()) {
-            if (!details.trim().equalsIgnoreCase(message.trim())) {
-                map.put("details", details);
+        if (details != null) {
+            if (!details.trim().isEmpty()) {
+                if (!details.trim().equalsIgnoreCase(message.trim())) {
+                    map.put("details", details);
+                }
             }
         }
         if (!listValidation.isEmpty()) { map.put("validation", listValidation); }

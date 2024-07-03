@@ -7,7 +7,7 @@ api:
               http://www.vollmed.com,https://www.vollmed.com'
     methods: 'GET,POST,PUT,DELETE'
   security:
-    secret: ${SECURITY_SECRET}
+    token.secret: ${SECURITY_SECRET}
 # Server configuration
 server:
   port: ${APP_PORT}
