@@ -33,6 +33,7 @@ public class ApplicationProperties {
 
     @Value("${api.config.path}") public String apiConfigPath;
     @Value("${api.config.language}") public String apiConfigLanguage;
+    @Value("${spring.mvc.offset}") public String apiConfigLanguageOffset;
 
     @Value("${api.debug}") public String apiDebug;
     @Value("${api.debug.debug-type}") public String apiDebugType;

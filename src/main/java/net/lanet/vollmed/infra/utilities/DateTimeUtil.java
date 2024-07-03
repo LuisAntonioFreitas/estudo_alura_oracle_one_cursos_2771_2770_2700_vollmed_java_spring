@@ -100,11 +100,11 @@ public class DateTimeUtil {
         Instant instant = ldt.toInstant(ZoneOffset.UTC);
         LocalDateTime convert = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
         if (ap.apiConfigLanguage.equalsIgnoreCase("pt_BR")) {
-            convert = LocalDateTime.ofInstant(instant, ZoneOffset.of("-03:00")); //Brasilia
+            convert = LocalDateTime.ofInstant(instant, ZoneOffset.of(ap.apiConfigLanguageOffset)); //Brasilia
             convert = LocalDateTime.parse(convert.format(formatter));
         }
         if (ap.apiConfigLanguage.equalsIgnoreCase("en_US")) {
-            convert = LocalDateTime.ofInstant(instant, ZoneOffset.of("-05:00")); //EST
+            convert = LocalDateTime.ofInstant(instant, ZoneOffset.of(ap.apiConfigLanguageOffset)); //EST
             convert = LocalDateTime.parse(convert.format(formatter));
         }
         return convert;
