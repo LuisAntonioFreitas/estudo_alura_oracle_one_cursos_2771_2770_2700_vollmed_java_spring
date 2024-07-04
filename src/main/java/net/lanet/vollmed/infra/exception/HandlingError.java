@@ -1,5 +1,6 @@
 package net.lanet.vollmed.infra.exception;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.persistence.EntityNotFoundException;
 import net.lanet.vollmed.infra.utilities.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,6 @@ public class HandlingError {
                 List.of());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-
     }
 
     // Erros de Validação de Dados de Regras de Negócio
@@ -139,6 +139,21 @@ public class HandlingError {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(map);
     }
     // Security
+    // Token
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity handlingError400(JWTVerificationException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Token inválido ou expirado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    // Token
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handlingError500(Exception ex, WebRequest request) {

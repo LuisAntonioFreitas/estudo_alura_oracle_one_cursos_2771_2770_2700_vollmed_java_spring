@@ -6,7 +6,7 @@ api:
     origins: '**'
     methods: 'GET,POST,PUT,DELETE,OPTIONS,HEAD,TRACE,CONNECT'
   security:
-    token.secret: ${SECURITY_SECRET:12345678}
+    token.secret: 12345678
 # Server configuration
 server:
   port: 8080
