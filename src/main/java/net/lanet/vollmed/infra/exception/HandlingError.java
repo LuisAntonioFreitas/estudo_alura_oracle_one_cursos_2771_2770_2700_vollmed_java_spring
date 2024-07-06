@@ -97,7 +97,7 @@ public class HandlingError {
 
     // Security
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity handlingErrorBadCredentials(Exception ex, WebRequest request) {
+    public ResponseEntity handlingErrorBadCredentials(BadCredentialsException ex, WebRequest request) {
         String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
@@ -110,7 +110,7 @@ public class HandlingError {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
     }
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity handlingErrorAuthentication(Exception ex, WebRequest request) {
+    public ResponseEntity handlingErrorAuthentication(AuthenticationException ex, WebRequest request) {
         String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
@@ -126,7 +126,7 @@ public class HandlingError {
                 ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN).body(map);
     }
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity handlingErrorAccessDenied(Exception ex, WebRequest request) {
+    public ResponseEntity handlingErrorAccessDenied(AccessDeniedException ex, WebRequest request) {
         String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
         Map<String, Object> map = defineCustomMessageError(
                 request.getDescription(false),
@@ -148,6 +148,32 @@ public class HandlingError {
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
                 !ex.getMessage().isEmpty() ? ex.getMessage() : "Token inválido ou expirado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    @ExceptionHandler(TokenMissingException.class)
+    public ResponseEntity handlingErrorTokenMissing(TokenMissingException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Token não informado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity handlingErrorInvalidToken(InvalidTokenException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Token inválido.",
                 details,
                 List.of());
 
