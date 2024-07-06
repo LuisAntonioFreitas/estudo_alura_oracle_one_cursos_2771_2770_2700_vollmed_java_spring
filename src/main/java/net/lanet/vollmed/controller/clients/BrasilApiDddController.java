@@ -1,5 +1,7 @@
 package net.lanet.vollmed.controller.clients;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.lanet.vollmed.infra.clients.brasilapiddd.BrasilApiDddDtoResponse;
 import net.lanet.vollmed.infra.clients.brasilapiddd.IBrasilApiDddService;
@@ -15,13 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "Ddd") // Swagger
+@Tag(name = "DDD") // Swagger
+@SecurityRequirement(name = "bearer-key") // Swagger
 @RequestMapping(path = "${api.config.path}/ddd")
 public class BrasilApiDddController {
     @Autowired
     @Qualifier("brasilApiDddService")
     private IBrasilApiDddService service;
 
+    @Operation(summary = "consulta DDD na Brasil API") // Swagger
     @GetMapping(path = {"/{ddd}"})
     public ResponseEntity<Object> findCep(@PathVariable String ddd) {
         Optional<BrasilApiDddDtoResponse> response = service.findDdd(ddd);

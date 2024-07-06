@@ -1,5 +1,7 @@
 package net.lanet.vollmed.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +34,9 @@ public class SysSqlController {
     @Qualifier("sysSqlService")
     private ISysSqlService service;
 
-//    @Operation(hidden = true) // Swagger
+    //    @Operation(hidden = true) // Swagger
+    @SecurityRequirement(name = "bearer-key") // Swagger
+    @Operation(summary = "consulta sql") // Swagger
     @PostMapping(path = {"/sql"})
     public ResponseEntity<?> executeSql(@RequestBody @Valid SysSqlDtoRequest request,
                                         HttpServletResponse response,
@@ -75,7 +79,9 @@ public class SysSqlController {
     }
 
 
-//    @Operation(hidden = true) // Swagger
+    //    @Operation(hidden = true) // Swagger
+    @SecurityRequirement(name = "bearer-key") // Swagger
+    @Operation(summary = "executa stored procedures") // Swagger
     @PostMapping(path = {"/sp"})
     public ResponseEntity<?> executeStoredProcedure(@RequestBody @Valid SysSpDtoRequest request,
                                                     HttpServletResponse response,
