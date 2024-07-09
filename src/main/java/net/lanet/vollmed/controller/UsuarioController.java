@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import net.lanet.vollmed.domain.usuario.*;
+import net.lanet.vollmed.infra.security.SecurityFilter;
+import net.lanet.vollmed.infra.security.TokenService;
 import net.lanet.vollmed.infra.utilities.ConvertsDataUtil;
 import net.lanet.vollmed.infra.utilities.RegexUtil;
 import net.lanet.vollmed.infra.utilities.UriBuilderUtil;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +39,11 @@ public class UsuarioController {
     @Autowired
     @Qualifier("usuarioService")
     private IUsuarioService service;
+
+    @Autowired
+    private TokenService serviceToken;
+    @Autowired
+    private SecurityFilter securityFilter;
 
     private final String item = "Usuário";
     private final String itemLowerCase = "usuario";
@@ -135,11 +144,21 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(view);
     }
 
-    @Operation(summary = "altera senha do " + itemLowerCase) // Swagger
-    @PatchMapping(path = {"/senha/{id}"})
-    public ResponseEntity<Object> senha(@PathVariable(value = "id") Long id,
-                                        @RequestBody @Valid UsuarioDtoSenhaRequest data) {
-        Usuario item = service.senha(findItem(id), data);
+    @Operation(summary = "altera senha do " + itemLowerCase + " logado") // Swagger
+    @PatchMapping(path = {"/senha"})
+    public ResponseEntity<Object> senha(@RequestBody @Valid UsuarioDtoSenhaRequest data,
+                                        HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String token = securityFilter.recoverToken(request, response);
+
+        Map<String, Object> dataToken = serviceToken.validateToken(token);
+        String subject = dataToken.get("subject").toString();
+        String id = dataToken.get("id").toString();
+
+        if (!subject.trim().equalsIgnoreCase(itemLowerCase)) {
+            throw new BadCredentialsException("");
+        }
+
+        Usuario item = service.senha(findItem(Long.valueOf(id)), data);
         if (item == null) {
             throw new BadCredentialsException("Nova Senha e Confirma Nova Senha não conferem.");
         }

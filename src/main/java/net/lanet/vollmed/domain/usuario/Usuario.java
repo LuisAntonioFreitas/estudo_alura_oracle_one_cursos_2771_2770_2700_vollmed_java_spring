@@ -34,25 +34,16 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name="id", nullable=false, unique=true)
     private Long id;
 
-    @NotBlank(message = "Nome precisa ser preenchido.")
-    @Size(max = 255, message = "Nome não pode conter mais do que 255 caracteres.")
     @Column(name="nome", nullable=false, length=255)
     private String nome;
 
-    @NotBlank(message = "Login precisa ser preenchido.")
-    @Size(max = 100, message = "Login não pode conter mais do que 100 caracteres.")
     @Column(name="login", nullable=false, unique=true, length=100)
     private String login;
 
-    @NotBlank(message = "Email precisa ser preenchido.")
-    @Size(max = 255, message = "Email não pode conter mais do que 255 caracteres.")
-    @Email(message = "Email precisa ser preenchido corretamente.")
     @Column(name="email", nullable=false, unique=true, length=255)
     private String email;
 
     @JsonIgnore
-    @NotBlank(message = "Senha precisa ser preenchida.")
-    @Size(max = 255, message = "Senha não pode conter mais do que 255 caracteres.")
     @Column(name="senha", nullable=false, length=255)
     private String senha;
 

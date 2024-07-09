@@ -3,6 +3,7 @@ package net.lanet.vollmed.domain.usuario;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 //@Hidden // Swagger
 @JsonIgnoreProperties(ignoreUnknown = true)

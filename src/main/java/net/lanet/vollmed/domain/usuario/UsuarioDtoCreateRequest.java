@@ -26,7 +26,7 @@ public record UsuarioDtoCreateRequest(
         String email,
 
         @NotBlank(message = "Senha precisa ser preenchida.")
-        @Size(max = 255, message = "Senha não pode conter mais do que 255 caracteres.")
+        @Size(max = 25, message = "Senha não pode conter mais do que 25 caracteres.")
         @JsonAlias("senha")
         String senha
 ) {
