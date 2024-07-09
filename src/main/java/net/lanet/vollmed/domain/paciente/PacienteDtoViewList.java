@@ -2,6 +2,7 @@ package net.lanet.vollmed.domain.paciente;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import net.lanet.vollmed.domain.endereco.Endereco;
+import net.lanet.vollmed.domain.endereco.EnderecoDtoView;
 import net.lanet.vollmed.infra.utilities.DateTimeUtil;
 
 @JsonPropertyOrder({"id"})
@@ -11,10 +12,8 @@ public record PacienteDtoViewList(
         String email,
         String telefone,
         String cpf,
-        Endereco endereco,
         Boolean ativo,
-        String createdAt,
-        String updatedAt
+        EnderecoDtoView endereco
 ) {
     public PacienteDtoViewList(Paciente entity) {
         this(
@@ -23,9 +22,8 @@ public record PacienteDtoViewList(
                 entity.getEmail(),
                 entity.getTelefone(),
                 entity.getCpf(),
-                entity.getEndereco(),
                 entity.getAtivo(),
-                entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter));
+                new EnderecoDtoView(entity.getEndereco())
+        );
     }
 }

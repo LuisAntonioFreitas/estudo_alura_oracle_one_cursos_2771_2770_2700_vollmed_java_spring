@@ -23,6 +23,7 @@ public record UsuarioDtoView(
                 entity.getEmail(),
                 entity.getAtivo(),
                 entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter));
+                entity.getUpdatedAt().format(DateTimeUtil.formatter)
+        );
     }
 }

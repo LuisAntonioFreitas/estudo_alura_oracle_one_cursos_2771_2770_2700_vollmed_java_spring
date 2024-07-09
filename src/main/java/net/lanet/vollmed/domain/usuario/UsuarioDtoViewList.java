@@ -11,9 +11,7 @@ public record UsuarioDtoViewList(
         String nome,
         String login,
         String email,
-        Boolean ativo,
-        String createdAt,
-        String updatedAt
+        Boolean ativo
 ) {
     public UsuarioDtoViewList(Usuario entity) {
         this(
@@ -21,8 +19,7 @@ public record UsuarioDtoViewList(
                 entity.getNome(),
                 entity.getLogin(),
                 entity.getEmail(),
-                entity.getAtivo(),
-                entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter));
+                entity.getAtivo()
+        );
     }
 }
