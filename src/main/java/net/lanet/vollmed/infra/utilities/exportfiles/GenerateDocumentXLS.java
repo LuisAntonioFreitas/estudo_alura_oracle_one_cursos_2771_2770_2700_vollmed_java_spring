@@ -175,6 +175,7 @@ public class GenerateDocumentXLS {
 
         style.setAlignment(HorizontalAlignment.LEFT);
         style.setVerticalAlignment(VerticalAlignment.TOP);
+        style.setWrapText(true);
 
         return style;
     }
