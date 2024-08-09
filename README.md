@@ -148,7 +148,7 @@ E do arquivo do [figma](https://raw.githubusercontent.com/LuisAntonioFreitas/est
 
 ---
 
-## ⭐ Créditos<a id="credits"></a>
+## ⭐ Créditos<a id="creditos"></a>
 
 * [Oracle One](https://www.oracle.com/br/education/oracle-next-education/)
 * [Alura](https://www.alura.com.br/)
