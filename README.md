@@ -127,6 +127,8 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da aplicação:
 > * Ao acessar o http://localhost:8080, informações sobre a API são mostradas. Isso também ocorre ao iniciar a aplicação no console.
 > * Apliquei o conceito de variáveis de ambiente e a utilização inteligente das "Applications Properties", definindo diversos dados e separando entre dev e production.
 > * O CORS também foi ajustado para trabalhar de forma diferente conforme o ambiente da aplicação sendo dev ou production.
+> * O tratamento de erro foi preparado para responder no formato jsons de forma padronizada. 
+> * Validations personalizados foram criados para trabalhar com os DTOs de forma a aumentar as opções de validação.  
 > * O banco de dados utilizado foi o MySQL.
 > * Além dos endpoints padronizados e adicionais, apliquei a esta API diversos novos conceitos e propostas.
 > * Sobre autenticação, além do login tradicional, o conceito de "refresh token" também foi introduzido.
@@ -146,7 +148,7 @@ E do arquivo do [figma](https://raw.githubusercontent.com/LuisAntonioFreitas/est
 
 ---
 
-## ⭐ Créditos<a id="creditos"></a>
+## ⭐ Créditos<a id="credits"></a>
 
 * [Oracle One](https://www.oracle.com/br/education/oracle-next-education/)
 * [Alura](https://www.alura.com.br/)
