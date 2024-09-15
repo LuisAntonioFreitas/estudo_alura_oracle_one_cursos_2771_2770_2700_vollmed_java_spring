@@ -1,13 +1,13 @@
 package net.lanet.vollmed.domain.paciente;
 
-import net.lanet.vollmed.infra.utilities.exportfiles.IHandleExportFile;
+import net.lanet.vollmed.infra.shared.ServiceCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IPacienteService extends IHandleExportFile {
+public interface IPacienteService extends ServiceCustom.MethodsStandard<Paciente> {
     List<Paciente> findAll(String search);
     List<Paciente> findAllAtivoTrue(String search);
     Page<Paciente> pageFindAll(Pageable page, String search);

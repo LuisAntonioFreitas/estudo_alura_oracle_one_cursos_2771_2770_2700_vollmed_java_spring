@@ -1,13 +1,13 @@
 package net.lanet.vollmed.domain.usuario;
 
-import net.lanet.vollmed.infra.utilities.exportfiles.IHandleExportFile;
+import net.lanet.vollmed.infra.shared.ServiceCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IUsuarioService extends IHandleExportFile {
+public interface IUsuarioService extends ServiceCustom.MethodsStandard<Usuario> {
     List<Usuario> findAll(String search);
     List<Usuario> findAllAtivoTrue(String search);
     Page<Usuario> pageFindAll(Pageable page, String search);

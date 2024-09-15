@@ -1,8 +1,6 @@
 package net.lanet.vollmed.domain.syssql;
 
-import jakarta.servlet.http.HttpServletResponse;
 import net.lanet.vollmed.infra.utilities.ApplicationProperties;
-import net.lanet.vollmed.infra.utilities.exportfiles.TemplateGenericExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,8 +18,8 @@ public class SysSqlService implements ISysSqlService  {
 
     @Autowired
     private ApplicationProperties ap;
-    @Autowired
-    private TemplateGenericExport template;
+//    @Autowired
+//    private TemplateGenericExport template;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -107,22 +105,22 @@ public class SysSqlService implements ISysSqlService  {
     }
 
 
-    @Override
-    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
-                            String title, String filter, String tabName) {
-        // Excel
-        template.generateXLS(response, list, fileName, title, filter, tabName);
-    }
-    @Override
-    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateCSV(response, list, fileName);
-    }
-    @Override
-    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateTSV(response, list, fileName);
-    }
-    @Override
-    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generatePDF(response, list, fileName);
-    }
+//    @Override
+//    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
+//                            String title, String filter, String tabName) {
+//        // Excel
+//        template.generateXLS(response, list, fileName, title, filter, tabName);
+//    }
+//    @Override
+//    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateCSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateTSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generatePDF(response, list, fileName);
+//    }
 }

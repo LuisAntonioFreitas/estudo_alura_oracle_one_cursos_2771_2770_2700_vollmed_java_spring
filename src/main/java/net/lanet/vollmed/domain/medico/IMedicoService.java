@@ -1,13 +1,13 @@
 package net.lanet.vollmed.domain.medico;
 
-import net.lanet.vollmed.infra.utilities.exportfiles.IHandleExportFile;
+import net.lanet.vollmed.infra.shared.ServiceCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface IMedicoService extends IHandleExportFile {
+public interface IMedicoService extends ServiceCustom.MethodsStandard<Medico> {
     List<Medico> findAll(String search);
     List<Medico> findAllAtivoTrue(String search);
     Page<Medico> pageFindAll(Pageable page, String search);

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import net.lanet.vollmed.domain.syssql.ISysSqlService;
 import net.lanet.vollmed.domain.syssql.SysSpDtoRequest;
 import net.lanet.vollmed.domain.syssql.SysSqlDtoRequest;
+import net.lanet.vollmed.infra.shared.ServiceCustom;
 import net.lanet.vollmed.infra.utilities.DateTimeUtil;
 import net.lanet.vollmed.infra.utilities.RegexUtil;
 import net.lanet.vollmed.infra.utilities.exportfiles.HandleExportFile;
@@ -33,6 +34,9 @@ public class SysSqlController {
     @Autowired
     @Qualifier("sysSqlService")
     private ISysSqlService service;
+
+    @Autowired
+    private ServiceCustom serviceCustom;
 
     //    @Operation(hidden = true) // Swagger
     @SecurityRequirement(name = "bearer-key") // Swagger
@@ -68,7 +72,8 @@ public class SysSqlController {
             // Converte tipos de dados
             List<Map<String, Object>> convertedSelectedResults = convertResults(selectedResults);
 
-            if (verifyExport("All", null, export, response, "Sql", convertedSelectedResults)) { return null; }
+            if (serviceCustom.verifyExport("All", null, export, convertedSelectedResults,
+                    response, "Sql")) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
         } catch (EntityNotFoundException e) {
@@ -101,7 +106,8 @@ public class SysSqlController {
             // Converte tipos de dados
             List<Map<String, Object>> convertedSelectedResults = convertResults(selectedResults);
 
-            if (verifyExport("All", null, export, response, "Sp", convertedSelectedResults)) { return null; }
+            if (serviceCustom.verifyExport("All", null, export, convertedSelectedResults,
+                    response, "Sp")) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
         } catch (EntityNotFoundException e) {
@@ -150,18 +156,18 @@ public class SysSqlController {
         return data;
     }
 
-    private Boolean verifyExport(String type, String search, String export, HttpServletResponse response,
-                                 String item, List<Map<String, Object>> viewList) {
-        if (export != null) {
-            if (viewList.isEmpty()) {
-                throw new EntityNotFoundException("Não existe conteúdo a ser exportado.");
-            }
-            String name = RegexUtil.normalizeStringLettersAndNumbers(item);
-            HandleExportFile.execute(export, service, response, viewList,
-                    String.format("%sList%s", name, type), String.format("Listagem | %s", item.toUpperCase()), null, name);
-            return true;
-        }
-        return false;
-    }
+//    private Boolean verifyExport(String type, String search, String export, HttpServletResponse response,
+//                                 String item, List<Map<String, Object>> viewList) {
+//        if (export != null) {
+//            if (viewList.isEmpty()) {
+//                throw new EntityNotFoundException("Não existe conteúdo a ser exportado.");
+//            }
+//            String name = RegexUtil.normalizeStringLettersAndNumbers(item);
+//            HandleExportFile.execute(export, service, response, viewList,
+//                    String.format("%sList%s", name, type), String.format("Listagem | %s", item.toUpperCase()), null, name);
+//            return true;
+//        }
+//        return false;
+//    }
 
 }
